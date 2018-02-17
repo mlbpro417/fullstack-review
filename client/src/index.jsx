@@ -23,8 +23,8 @@ class App extends React.Component {
       success: function(data) {
         console.log('post successful');
         console.log('hello from AJAX success', data)
-      }
-
+      },
+      
     })
   }
 

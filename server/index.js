@@ -16,7 +16,7 @@ app.post('/repos', upload.array(), function (req, res) {
   let username = Object.getOwnPropertyNames(req.body)[0];
   console.log(username);
   let dataFromGithub = github.getReposByUsername(username, function(err, data, body) {
-    //console.log('hello data', data);
+    //console.log('hello body', body);
     let newBody = JSON.parse(body).map(function(item) {
       let result = {};
       result.repoId = item.id;
@@ -27,33 +27,30 @@ app.post('/repos', upload.array(), function (req, res) {
       result.url = item.html_url;
       
       return result;
-      // console.log(item.id);
-      // // name
-      // console.log(item.name);
-      // // owner.login
-      // console.log(item.owner.login);
-      // // owner.id
-      // console.log(item.owner.id);
-      // // forks
-      // console.log(item.forks);
-      // // html_url
-      // console.log(item.html_url);
     })
     console.log(newBody)
-    db.save(newBody[0]);
+    db.save(newBody);
   });
 
   //console.log(dataFromGithub);
-  //res.send(dataFromGithub);
+  res.status(201).send();
   // This route should take the github username provided
   // and get the repo information from the github API, then
   // save the repo information in the database
 
 });
 
-app.get('/repos', function (req, res) {
+app.get('/repos', upload.array(), function (req, res) {
   // TODO - your code here!
   // This route should send back the top 25 repos
+  console.log('hello from GET', req.body);
+  db.Repo.find(function (err, data) {
+  if (err) {
+    return console.error(err);
+  }
+  console.log('hello from DB', data);
+  res.status(200).send(data);
+})
 });
 
 let port = 1128;

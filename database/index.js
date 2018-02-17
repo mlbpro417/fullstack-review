@@ -3,26 +3,28 @@ mongoose.connect('mongodb://localhost/fetcher');
 
 let repoSchema = mongoose.Schema({
   // repo id
-  id: Number,
+  id: { type: Number, unique: true },
   // repo name
-  name: String,
+  name: { type: String, unique: true },
   // repo owner (username)
-  usernameOfOwner: String,
+  usernameOfOwner: { type: String, unique: true },
   // repo url
-  url: String,
+  url: { type: String, unique: true },
   // repo number of forks
-  forks: Number
+  forks: { type: Number, unique: true }
 });
 
 let Repo = mongoose.model('Repo', repoSchema);
 
-let test = {id: 18221276, name: 'git-consortium', usernameOfOwner: 'octocat', url: "https://github.com/octocat/git-consortium", forks: 24}
+//let test = {id: 18221276, name: 'git-consortium', usernameOfOwner: 'octocat', url: "https://github.com/octocat/git-consortium", forks: 24}
 
-let save = (repo) => {
+let save = (listOfRepos) => {
   //Repo.create
-  let newRepo = new Repo({repoId: repo.repoId, name: repo.name, usernameOfOwner: repo.usernameOfOwner, url: repo.url, forks: repo.forks});
-  newRepo.save();
-  // This function should save a repo or repos to
-  // the MongoDB 
+  listOfRepos.forEach(function(repo) {
+    let newRepo = new Repo({repoId: repo.repoId, name: repo.name, usernameOfOwner: repo.usernameOfOwner, url: repo.url, forks: repo.forks});
+    newRepo.save();
+  })
 }
+
 module.exports.save = save;
+module.exports.Repo = Repo;
