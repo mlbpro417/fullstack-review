@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const multer = require('multer');
-const getReposByUsername = require('../helpers/github.js')
+const github = require('../helpers/github.js')
 
 let app = express();
 let upload = multer();
@@ -11,8 +11,12 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.post('/repos', upload.array(), function (req, res) {
-  console.log('hello from app.post', req.body);
-  console.log(getReposByUsername);
+  //console.log('hello from app.post', req.body);
+  let username = Object.getOwnPropertyNames(req.body)[0];
+  console.log(username);
+  let dataFromGithub = github.getReposByUsername(username);
+  //console.log(dataFromGithub);
+  //res.send(dataFromGithub);
   // This route should take the github username provided
   // and get the repo information from the github API, then
   // save the repo information in the database
