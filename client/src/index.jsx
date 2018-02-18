@@ -8,9 +8,11 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = { 
-      repos: []
+      repos: [{name: 'josh'}]
     }
-
+  }
+  componentDidMount() {
+    this.fetch();
   }
 
   search (term) {
@@ -22,9 +24,27 @@ class App extends React.Component {
       //contentType: 'application/json',
       success: function(data) {
         console.log('post successful');
-        console.log('hello from AJAX success', data)
+        console.log('hello from AJAX POST success', data);
       },
-      
+      error: function(data) {
+        console.error('POST was not successful', data);
+      }
+    })
+  }
+
+  fetch() {
+    $.ajax({
+      method: 'GET',
+      url: '/repos',
+      //contentType: 'application/json',
+      success: (data) => {
+        console.log('GET success', data);
+        this.setState({repos: data})
+        console.log(this.state.repos)
+      },
+      error: function(data) {
+        console.error('GET was not successful', data);
+      }
     })
   }
 
