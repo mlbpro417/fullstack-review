@@ -44,13 +44,13 @@ app.get('/repos', upload.array(), function (req, res) {
   // TODO - your code here!
   // This route should send back the top 25 repos
   console.log('hello from GET', req.body);
-  db.Repo.find(function (err, data) {
-  if (err) {
-    return console.error(err);
-  }
-  console.log('hello from DB', data);
-  res.status(200).send(data);
-})
+  db.findTop25(function (err, data) {
+    if (err) {
+      return console.error(err);
+    }
+    console.log('hello from DB', data);
+    res.status(200).send(data);
+  })
 });
 
 let port = 1128;

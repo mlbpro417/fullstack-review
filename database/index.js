@@ -25,6 +25,10 @@ let save = (listOfRepos) => {
     newRepo.save();
   })
 }
-
+let findTop25 = (callback) => {  
+  Repo.find().sort('-forks').limit(25).exec(callback);
+}
+//findTop25
 module.exports.save = save;
 module.exports.Repo = Repo;
+module.exports.findTop25 = findTop25;
